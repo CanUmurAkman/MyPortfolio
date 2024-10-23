@@ -1,0 +1,41 @@
+triage: triage duration ~TRIA(1,1.5,4)
+bed_delay_2: observation duration for green-yellow patient in observation room ~TRIA( 28, 30 , 32 )
+response_red: examination and treatment duration of a red patient ~EXPO(15)
+nurse_for_yellow: yellow patient discharge duration ~UNIF(1.5,2)
+patient_interval_xx : interarrival time between patients within given hours of the day ~EXPO(λ) with following λ values:
+		λ
+0.00-3.00	7
+3.00-6.00	11
+6.00-9.00	14
+9.00-12.00	18
+12.00-15.00	25
+15.00-18.00	20
+18.00-21.00	12
+21.00-24.00	6
+red_to_yellow: whether the red patient is relabeled as yellow after doctors examination or not (1: yes, 0: no) ~DISC(0.7,0,1,1)
+ambulance_call_interval_xx: interarrival time between ambulance calls within given hours of the day ~EXPO(λ) with following λ values:
+		λ
+0.00-3.00	1
+3.00-6.00	2
+6.00-9.00	3
+9.00-12.00	2
+12.00-15.00	4
+15.00-18.00	2
+18.00-21.00	1
+21.00-24.00	1
+ambulance_arrival: duration of picking up and bringing the patients after the call ~TRIA( 10 , 13,  15 )
+doc_for_yellow: examination and treatment time for yellow patient ~TRIA(6,8.5,10)
+doctor_check : time spent during doctor's check for red patients after observation. ~UNIF(1,3)
+observation_red : observation time for red patients. ~UNIF( 19, 21 )
+yellow_to_red: whether the yellow patient is relabeled as red after doctors examination or not (1: yes, 0: no) ~DISC(0.8,0,1,1)
+green_type: indicates the doctors prescribed treatment for green patients (1: injection, 2: observation, 3: prescribe medicine and discharge) ~DISC(0.4,1,0.7,2,1,3)
+red_group: # of patients arrive with a single ambulance call ~DISC(0.75,1,1,2)
+redirect: time spent to transfer patients to nearest hospital (ambulance returning to hospital is included) ~UNIF( 9, 11 )
+injection_green_yellow: patient type (1: injection, 2: green, 3: yellow) ~DISC(0.3,1,0.6,2,1,3)
+bed_delay_1_yellow: nurse observation bed set-up duration ~UNIF(2,3)
+medical_tests: medical test duration ~UNIF(4,6)
+yellow_med_test_need: whether a yellow patient is sent for medical test or not (1: yes, 0: no) ~DISC(0.5,0,1,1)
+injection: injection duration ~UNIF(1,2)
+registration: registration duration ~UNIF(0.5,1.5)
+red_med_test_need: whether the doctor requests medical test for a red patient or not (1: yes, 0: no) ~DISC(0.75,0,1,1)
+doc_for_green: doctor examination duration for green patients ~TRIA(2,6,7)

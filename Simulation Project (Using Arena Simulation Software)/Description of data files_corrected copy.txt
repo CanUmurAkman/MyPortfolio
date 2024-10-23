@@ -1,0 +1,23 @@
+triage: triage duration
+bed_delay_2: observation duration for green-yellow patient in observation room
+response_red: examination and treatment duration of a red patient
+nurse_for_yellow: yellow patient discharge duration
+patient_interval_xx : interarrival time between patients within given hours of the day
+red_to_yellow: whether the red patient is relabeled as yellow after doctors examination or not (1: yes, 0: no)
+ambulance_call_interval_xx: interarrival time between ambulance calls within given hours of the day
+ambulance_arrival: duration of picking up and bringing the patients after the call
+doc_for_yellow: examination and treatment time for yellow patient
+doctor_check : time spent during doctor's check for red patients after observation.
+observation_red : observation time for red patients.
+yellow_to_red: whether the yellow patient is relabeled as red after doctors examination or not (1: yes, 0: no)
+green_type: indicates the doctors prescribed treatment for green patients (1: injection, 2: observation, 3: prescribe medicine and discharge)
+red_group: # of patients arrive with a single ambulance call
+redirect: time spent to transfer patients to nearest hospital (ambulance returning to hospital is included)
+injection_green_yellow: patient type (1: injection, 2: green, 3: yellow)
+bed_delay_1_yellow: nurse observation bed set-up duration 
+medical_tests: medical test duration
+yellow_med_test_need: whether a yellow patient is sent for medical test or not (1: yes, 0: no)
+injection: injection duration
+registration: registration duration
+red_med_test_need: whether the doctor requests medical test for a red patient or not (1: yes, 0: no)
+doc_for_green: doctor examination duration for green patients
