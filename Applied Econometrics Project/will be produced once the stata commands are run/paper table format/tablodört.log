@@ -1,0 +1,21 @@
+-----------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/macbookpro/Desktop/ECON426 Research Project/tablodört.log
+  log type:  text
+ opened on:   1 May 2023, 10:17:31
+
+. matrix list table
+
+table[4,3]
+                    Y/N    Pmg/Pgdp       CAR/N
+        OLS   .93346385  -1.0991034  -.61278873
+     Within   .62760535  -.51668083  -.60410679
+    Amemiya  -.59839252  -.64066408   .61286226
+Swamy&Arora   .83419591   -.9120342  -.66581836
+
+. log close
+      name:  <unnamed>
+       log:  /Users/macbookpro/Desktop/ECON426 Research Project/tablodört.log
+  log type:  text
+ closed on:   1 May 2023, 10:17:31
+-----------------------------------------------------------------------------------------------------------------------------------------

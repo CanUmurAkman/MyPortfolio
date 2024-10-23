@@ -1,0 +1,22 @@
+-----------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/macbookpro/Desktop/ECON426 Research Project/tabloiki.log
+  log type:  text
+ opened on:   1 May 2023, 10:17:30
+
+. matrix list tabloiki
+
+tabloiki[5,4]
+               LINCOMEP       LRPMG    LCARPCAP      Const.
+        OLS   .88996166  -.89179791  -.76337275   2.3913256
+     Within   .66224966  -.32170246  -.64048288   2.4026697
+    Between   .96757639  -.96355041  -.79529908   2.5416298
+    Amemiya   .60165902  -.36538018   -.6204085   2.0955863
+Swamy&Arora   .55498568  -.42038925  -.60684012   1.9966984
+
+. log close
+      name:  <unnamed>
+       log:  /Users/macbookpro/Desktop/ECON426 Research Project/tabloiki.log
+  log type:  text
+ closed on:   1 May 2023, 10:17:30
+-----------------------------------------------------------------------------------------------------------------------------------------

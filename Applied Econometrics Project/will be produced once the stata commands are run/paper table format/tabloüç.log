@@ -1,0 +1,22 @@
+-----------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/macbookpro/Desktop/ECON426 Research Project/tabloüç.log
+  log type:  text
+ opened on:   1 May 2023, 10:17:30
+
+. matrix list tabloüç
+
+tabloüç[4,5]
+                                                          L.            
+               LINCOMEP       LRPMG    LCARPCAP    LGASPCAR      Const.
+        OLS   .06647615  -.07827209  -.04363944   .92878551     .254099
+     Within   .19329572  -.15913216  -.18605841   .69201072   .72638068
+    Amemiya   .16334705  -.17075711  -.15949041   .73346857   .59489523
+Swamy&Arora   .13205644  -.14437854  -.10540162   .84169614   .43999334
+
+. log close
+      name:  <unnamed>
+       log:  /Users/macbookpro/Desktop/ECON426 Research Project/tabloüç.log
+  log type:  text
+ closed on:   1 May 2023, 10:17:30
+-----------------------------------------------------------------------------------------------------------------------------------------

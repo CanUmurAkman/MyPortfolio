@@ -1,0 +1,1704 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/macbookpro/Desktop/ECON426 Papoer Script.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 9 May 2023, 11:21:25
+
+{com}. import excel "/Users/macbookpro/Desktop/ECON426 Research Project/Gasoline.xlsx", sheet("Gasoline.txt") firstrow
+{res}{text}(6 vars, 342 obs)
+
+{com}. 
+. 
+. *SET PANEL VARIABLE
+
+. encode COUNTRY, gen(numerical_country)
+
+. xtset numerical_country YEAR
+{res}
+{col 1}{txt:Panel variable: }{res:numerical_country}{txt: (strongly balanced)}
+{p 1 16 2}{txt:Time variable: }{res:YEAR}{txt:, }{res:{bind:1960}}{txt: to }{res:{bind:1978}}{p_end}
+{txt}{col 10}Delta: {res}1 unit
+
+{com}. 
+. *Install asdoc to create a descriptive statistics table
+
+. *ssc install asdoc
+
+. 
+. *DESCRIPTIVE STATISTICS
+
+. asdoc sum  LGASPCAR LINCOMEP LRPMG LCARPCAP, replace, save(desc_stat.doc) 
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 4}LGASPCAR {c |}{res}        342    4.296242    .5489071   3.380209   6.156644
+{txt}{space 4}LINCOMEP {c |}{res}        342   -6.139425    .6345925  -8.072524  -5.221232
+{txt}{space 7}LRPMG {c |}{res}        342   -.5231032    .6782225  -2.896497   1.125311
+{txt}{space 4}LCARPCAP {c |}{res}        342   -9.041805    1.218896  -13.47518  -7.536176
+Click to Open File:  {browse "desc_stat.doc"}
+
+{com}. 
+. *-----------------------------------------------------------------------------
+
+. *PART I: MODELS I&II
+
+. 
+. *MODEL I 
+
+. reg LGASPCAR LINCOMEP LRPMG LCARPCAP
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       342
+{txt}{hline 13}{c +}{hline 34}   F(3, 338)       = {res}   664.00
+{txt}       Model {c |} {res} 87.8386069         3  29.2795356   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 14.9043574       338  .044095732   {txt}R-squared       ={res}    0.8549
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8536
+{txt}       Total {c |} {res} 102.742964       341  .301299016   {txt}Root MSE        =   {res} .20999
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .8899617{col 26}{space 2} .0358058{col 37}{space 1}   24.86{col 46}{space 3}0.000{col 54}{space 4} .8195314{col 67}{space 3}  .960392
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.8917979{col 26}{space 2} .0303147{col 37}{space 1}  -29.42{col 46}{space 3}0.000{col 54}{space 4}-.9514272{col 67}{space 3}-.8321686
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.7633727{col 26}{space 2} .0186083{col 37}{space 1}  -41.02{col 46}{space 3}0.000{col 54}{space 4}-.7999754{col 67}{space 3}-.7267701
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 2.391326{col 26}{space 2} .1169343{col 37}{space 1}   20.45{col 46}{space 3}0.000{col 54}{space 4} 2.161315{col 67}{space 3} 2.621336
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. eststo MODELI
+
+. 
+. *MODEL II (without the lagged dependent variable) = MODEL I
+
+. reg LGASPCAR LINCOMEP LRPMG LCARPCAP
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       342
+{txt}{hline 13}{c +}{hline 34}   F(3, 338)       = {res}   664.00
+{txt}       Model {c |} {res} 87.8386069         3  29.2795356   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 14.9043574       338  .044095732   {txt}R-squared       ={res}    0.8549
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8536
+{txt}       Total {c |} {res} 102.742964       341  .301299016   {txt}Root MSE        =   {res} .20999
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .8899617{col 26}{space 2} .0358058{col 37}{space 1}   24.86{col 46}{space 3}0.000{col 54}{space 4} .8195314{col 67}{space 3}  .960392
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.8917979{col 26}{space 2} .0303147{col 37}{space 1}  -29.42{col 46}{space 3}0.000{col 54}{space 4}-.9514272{col 67}{space 3}-.8321686
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.7633727{col 26}{space 2} .0186083{col 37}{space 1}  -41.02{col 46}{space 3}0.000{col 54}{space 4}-.7999754{col 67}{space 3}-.7267701
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 2.391326{col 26}{space 2} .1169343{col 37}{space 1}   20.45{col 46}{space 3}0.000{col 54}{space 4} 2.161315{col 67}{space 3} 2.621336
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. 
+. *Let's also include the lagged dependent variable for MODEL II
+
+. reg LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       324
+{txt}{hline 13}{c +}{hline 34}   F(4, 319)       = {res}  6101.33
+{txt}       Model {c |} {res} 93.1822982         4  23.2955746   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 1.21797772       319  .003818112   {txt}R-squared       ={res}    0.9871
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.9869
+{txt}       Total {c |} {res}  94.400276       323  .292260916   {txt}Root MSE        =   {res} .06179
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .0664762{col 26}{space 2}  .017923{col 37}{space 1}    3.71{col 46}{space 3}0.000{col 54}{space 4} .0312139{col 67}{space 3} .1017384
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.0782721{col 26}{space 2} .0168226{col 37}{space 1}   -4.65{col 46}{space 3}0.000{col 54}{space 4}-.1113694{col 67}{space 3}-.0451748
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.0436394{col 26}{space 2} .0137153{col 37}{space 1}   -3.18{col 46}{space 3}0.002{col 54}{space 4}-.0706233{col 67}{space 3}-.0166556
+{txt}{space 12} {c |}
+{space 4}LGASPCAR {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .9287855{col 26}{space 2} .0161576{col 37}{space 1}   57.48{col 46}{space 3}0.000{col 54}{space 4} .8969966{col 67}{space 3} .9605744
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}  .254099{col 26}{space 2} .0515517{col 37}{space 1}    4.93{col 46}{space 3}0.000{col 54}{space 4} .1526746{col 67}{space 3} .3555234
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. 
+. *-----------------------------------------------------------------------------
+
+. *PART II:Estimation Techniques for MODEL I & TABLE II
+
+. *Estimation Techniques for MODEL I
+
+. *OLS
+
+. reg LGASPCAR LINCOMEP LRPMG LCARPCAP
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       342
+{txt}{hline 13}{c +}{hline 34}   F(3, 338)       = {res}   664.00
+{txt}       Model {c |} {res} 87.8386069         3  29.2795356   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 14.9043574       338  .044095732   {txt}R-squared       ={res}    0.8549
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8536
+{txt}       Total {c |} {res} 102.742964       341  .301299016   {txt}Root MSE        =   {res} .20999
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .8899617{col 26}{space 2} .0358058{col 37}{space 1}   24.86{col 46}{space 3}0.000{col 54}{space 4} .8195314{col 67}{space 3}  .960392
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.8917979{col 26}{space 2} .0303147{col 37}{space 1}  -29.42{col 46}{space 3}0.000{col 54}{space 4}-.9514272{col 67}{space 3}-.8321686
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.7633727{col 26}{space 2} .0186083{col 37}{space 1}  -41.02{col 46}{space 3}0.000{col 54}{space 4}-.7999754{col 67}{space 3}-.7267701
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 2.391326{col 26}{space 2} .1169343{col 37}{space 1}   20.45{col 46}{space 3}0.000{col 54}{space 4} 2.161315{col 67}{space 3} 2.621336
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. eststo OLS_M1
+
+. scalar b1a = _b[LINCOMEP]
+
+. scalar b2a = _b[LRPMG]
+
+. scalar b3a = _b[LCARPCAP]
+
+. scalar constanta = _b[_cons]
+
+. *Within Regression (Fixed Effect)
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       342
+{txt}Group variable: {res}numerical_~y{txt}{col 49}Number of groups{col 67}={col 69}{res}        18
+
+{txt}R-squared:{col 49}Obs per group:
+     Within  = {res}0.8396{col 63}{txt}min{col 67}={col 69}{res}        19
+{txt}     Between = {res}0.5755{col 63}{txt}avg{col 67}={col 69}{res}      19.0
+{txt}     Overall = {res}0.6150{col 63}{txt}max{col 67}={col 69}{res}        19
+
+{txt}{col 49}F({res}3{txt},{res}321{txt}){col 67}={col 70}{res}   560.09
+{txt}corr(u_i, Xb) = {res}-0.2468{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .6622497{col 26}{space 2}  .073386{col 37}{space 1}    9.02{col 46}{space 3}0.000{col 54}{space 4} .5178713{col 67}{space 3}  .806628
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.3217025{col 26}{space 2} .0440993{col 37}{space 1}   -7.29{col 46}{space 3}0.000{col 54}{space 4}-.4084625{col 67}{space 3}-.2349424
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.6404829{col 26}{space 2} .0296789{col 37}{space 1}  -21.58{col 46}{space 3}0.000{col 54}{space 4}-.6988725{col 67}{space 3}-.5820933
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}  2.40267{col 26}{space 2} .2253094{col 37}{space 1}   10.66{col 46}{space 3}0.000{col 54}{space 4}   1.9594{col 67}{space 3} 2.845939
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} .34841288
+     {txt}sigma_e {c |} {res} .09233035
+         {txt}rho {c |} {res} .93438171{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}17{txt}, {res}321{txt}) = {res}83.96{col 62}{txt}Prob > F = {res}0.0000
+
+{com}. eststo Within_M1
+
+. scalar b1b = _b[LINCOMEP]
+
+. scalar b2b = _b[LRPMG]
+
+. scalar b3b = _b[LCARPCAP]
+
+. scalar constantb = _b[_cons]
+
+. *Between Regression
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP, be
+
+{txt}Between regression (regression on group means)  Number of obs     = {res}       342
+{txt}Group variable: {res}numerical_~y                    {txt}Number of groups  = {res}        18
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.7337                                         {txt}min = {res}        19
+{txt}     Between = {res}0.8799                                         {txt}avg = {res}      19.0
+{txt}     Overall = {res}0.8529                                         {txt}max = {res}        19
+
+                                                {txt}F({res}3{txt},{res}14{txt})           =  {res}    34.19
+{txt}sd(u_i + avg(e_i.)) = {res}.1966886                  {txt}Prob > F          =     {res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .9675764{col 26}{space 2} .1556662{col 37}{space 1}    6.22{col 46}{space 3}0.000{col 54}{space 4} .6337056{col 67}{space 3} 1.301447
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.9635504{col 26}{space 2} .1329214{col 37}{space 1}   -7.25{col 46}{space 3}0.000{col 54}{space 4}-1.248639{col 67}{space 3}-.6784623
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.7952991{col 26}{space 2} .0824742{col 37}{space 1}   -9.64{col 46}{space 3}0.000{col 54}{space 4}-.9721887{col 67}{space 3}-.6184095
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}  2.54163{col 26}{space 2} .5267844{col 37}{space 1}    4.82{col 46}{space 3}0.000{col 54}{space 4}  1.41179{col 67}{space 3}  3.67147
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. eststo Between_M1
+
+. scalar b1c = _b[LINCOMEP]
+
+. scalar b2c = _b[LRPMG]
+
+. scalar b3c = _b[LCARPCAP]
+
+. scalar constantc = _b[_cons]
+
+. *Random Effect Model 1: Amemiya (2SGLS) 
+
+. xthtaylor LGASPCAR LINCOMEP LRPMG LCARPCAP numerical_country, endog(LRPMG LCARPCAP) am
+
+{txt}Amemiya–MaCurdy estimation{col 49}Number of obs{col 67}={col 69}{res}       342
+{txt}Group variable: {res}numerical_~y{txt}{col 49}Number of groups{col 67}={col 69}{res}        18
+
+{txt}Time variable: {res}YEAR{txt}{col 49}Obs per group:
+{col 63}min{col 67}={col 69}{res}        19
+{txt}{col 63}avg{col 67}={col 69}{res}        19
+{txt}{col 63}max{col 67}={col 69}{res}        19
+
+{txt}Random effects u_i ~ {res}i.i.d.{txt}{col 49}Wald chi2({res}4{txt}){col 67}={col 69}{res}   1706.00
+{col 49}{txt}Prob > chi2{col 67}={res}{col 73}0.0000
+
+{txt}{hline 13}{c TT}{hline 64}
+    LGASPCAR {c |}{col 16}Coefficient{col 29}Std. err.{col 44}z{col 49}P>|z|{col 59}[95% conf. interval]
+{hline 13}{c +}{hline 64}
+{res}TVexogenous{txt}{col 14}{c |}
+    LINCOMEP {c |}{res}{col 17}  .601659{col 28} .0655808{col 39}   9.17{col 49}0.000{col 58}  .473123{col 70}  .730195
+TVendogenous{txt}{col 14}{c |}
+       LRPMG {c |}{res}{col 17}-.3653802{col 28} .0416331{col 39}  -8.78{col 49}0.000{col 58}-.4469796{col 70}-.2837808
+    {txt}LCARPCAP {c |}{res}{col 17}-.6204085{col 28} .0272462{col 39} -22.77{col 49}0.000{col 58}-.6738101{col 70}-.5670069
+TIexogenous{txt}{col 14}{c |}
+numerical_~y {c |}{res}{col 17} .0098687{col 28} .0152673{col 39}   0.65{col 49}0.518{col 58}-.0200547{col 70}  .039792
+{txt}{col 14}{c |}
+       _cons {c |}{res}{col 17} 2.095586{col 28} .2502824{col 39}   8.37{col 49}0.000{col 58} 1.605042{col 70} 2.586131
+{txt}{hline 13}{c +}{hline 64}
+     sigma_u {c |} {res} .33218938
+{txt}     sigma_e {c |} {res}  .0919019
+{txt}         rho {c |} {res} .92890352{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+Note: {res}TV{txt} refers to time varying; {res}TI{txt} refers to time invariant.
+
+{com}. eststo RE_Amemiya_M1
+
+. scalar b1d = _b[LINCOMEP]
+
+. scalar b2d = _b[LRPMG]
+
+. scalar b3d = _b[LCARPCAP]
+
+. scalar constantd = _b[_cons]
+
+. *Random Effect Model 2: Swamy&Arora (2SGLS)
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP, re theta
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       342
+{txt}Group variable: {res}numerical_~y                    {txt}Number of groups  = {res}        18
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.8363                                         {txt}min = {res}        19
+{txt}     Between = {res}0.7099                                         {txt}avg = {res}      19.0
+{txt}     Overall = {res}0.7309                                         {txt}max = {res}        19
+
+                                                {txt}Wald chi2({res}3{txt})      =  {res}  1642.20
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+{txt}theta        = {res}.89230673
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .5549857{col 26}{space 2} .0591282{col 37}{space 1}    9.39{col 46}{space 3}0.000{col 54}{space 4} .4390966{col 67}{space 3} .6708748
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.4203892{col 26}{space 2} .0399781{col 37}{space 1}  -10.52{col 46}{space 3}0.000{col 54}{space 4} -.498745{col 67}{space 3}-.3420335
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.6068401{col 26}{space 2}  .025515{col 37}{space 1}  -23.78{col 46}{space 3}0.000{col 54}{space 4}-.6568487{col 67}{space 3}-.5568316
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 1.996698{col 26}{space 2}  .184326{col 37}{space 1}   10.83{col 46}{space 3}0.000{col 54}{space 4} 1.635426{col 67}{space 3} 2.357971
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} .19554465
+     {txt}sigma_e {c |} {res} .09233035
+         {txt}rho {c |} {res} .81769849{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. eststo RE_SwamyArora_M1
+
+. scalar b1e = _b[LINCOMEP]
+
+. scalar b2e = _b[LRPMG]
+
+. scalar b3e = _b[LCARPCAP]
+
+. scalar constante = _b[_cons]
+
+. *TABLE II
+
+. * Create a Row Vector for the Coefficients
+
+. matrix coefficients = (b1a, b2a, b3a, constanta, b1b, b2b, b3b, constantb, b1c, b2c, b3c, constantc, b1d, b2d, b3d, constantd, b1e, b2e, b3e, constante)
+
+. 
+. * Create a Table of the Coefficients
+
+. matrix tabloiki = J(5, 4, .)
+
+. matrix tabloiki[1, 1] = coefficients[1, 1]
+
+. matrix tabloiki[1, 2] = coefficients[1, 2]
+
+. matrix tabloiki[1, 3] = coefficients[1, 3]
+
+. matrix tabloiki[1, 4] = coefficients[1, 4]
+
+. matrix tabloiki[2, 1] = coefficients[1, 5]
+
+. matrix tabloiki[2, 2] = coefficients[1, 6]
+
+. matrix tabloiki[2, 3] = coefficients[1, 7]
+
+. matrix tabloiki[2, 4] = coefficients[1, 8]
+
+. matrix tabloiki[3, 1] = coefficients[1, 9]
+
+. matrix tabloiki[3, 2] = coefficients[1, 10]
+
+. matrix tabloiki[3, 3] = coefficients[1, 11]
+
+. matrix tabloiki[3, 4] = coefficients[1, 12]
+
+. matrix tabloiki[4, 1] = coefficients[1, 13]
+
+. matrix tabloiki[4, 2] = coefficients[1, 14]
+
+. matrix tabloiki[4, 3] = coefficients[1, 15]
+
+. matrix tabloiki[4, 4] = coefficients[1, 16]
+
+. matrix tabloiki[5, 1] = coefficients[1, 17]
+
+. matrix tabloiki[5, 2] = coefficients[1, 18]
+
+. matrix tabloiki[5, 3] = coefficients[1, 19]
+
+. matrix tabloiki[5, 4] = coefficients[1, 20]
+
+. 
+. * Add Row and Column Labels
+
+. matrix rownames tabloiki = "OLS" "Within" "Between" "Amemiya" "Swamy&Arora"
+
+. matrix colnames tabloiki = "LINCOMEP" "LRPMG" "LCARPCAP" "Const."
+
+. 
+. * Display the Matrix Table
+
+. matrix list tabloiki
+{res}
+{txt}tabloiki[5,4]
+               LINCOMEP       LRPMG    LCARPCAP      Const.
+        OLS {res}  .88996166  -.89179791  -.76337275   2.3913256
+{txt}     Within {res}  .66224966  -.32170246  -.64048288   2.4026697
+{txt}    Between {res}  .96757639  -.96355041  -.79529908   2.5416298
+{txt}    Amemiya {res}  .60165902  -.36538018   -.6204085   2.0955863
+{txt}Swamy&Arora {res}  .55498568  -.42038925  -.60684012   1.9966984
+{reset}
+{com}. 
+. *Save the Table
+
+. log using "tabloiki.log", replace
+{err}log file already open
+{txt}{search r(604), local:r(604);}
+
+{com}. matrix list tabloiki
+{res}
+{txt}tabloiki[5,4]
+               LINCOMEP       LRPMG    LCARPCAP      Const.
+        OLS {res}  .88996166  -.89179791  -.76337275   2.3913256
+{txt}     Within {res}  .66224966  -.32170246  -.64048288   2.4026697
+{txt}    Between {res}  .96757639  -.96355041  -.79529908   2.5416298
+{txt}    Amemiya {res}  .60165902  -.36538018   -.6204085   2.0955863
+{txt}Swamy&Arora {res}  .55498568  -.42038925  -.60684012   1.9966984
+{reset}
+{com}. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}/Users/macbookpro/Desktop/ECON426 Papoer Script.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res} 9 May 2023, 11:22:01
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/macbookpro/Desktop/ECON426_Paper_Script.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 9 May 2023, 11:30:16
+
+{com}.  
+. *PART III: Estimation Techniques for MODEL II & TABLE III
+
+. *Estimation Techniques for MODEL II
+
+. *OLS
+
+. reg LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       324
+{txt}{hline 13}{c +}{hline 34}   F(4, 319)       = {res}  6101.33
+{txt}       Model {c |} {res} 93.1822982         4  23.2955746   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 1.21797772       319  .003818112   {txt}R-squared       ={res}    0.9871
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.9869
+{txt}       Total {c |} {res}  94.400276       323  .292260916   {txt}Root MSE        =   {res} .06179
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .0664762{col 26}{space 2}  .017923{col 37}{space 1}    3.71{col 46}{space 3}0.000{col 54}{space 4} .0312139{col 67}{space 3} .1017384
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.0782721{col 26}{space 2} .0168226{col 37}{space 1}   -4.65{col 46}{space 3}0.000{col 54}{space 4}-.1113694{col 67}{space 3}-.0451748
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.0436394{col 26}{space 2} .0137153{col 37}{space 1}   -3.18{col 46}{space 3}0.002{col 54}{space 4}-.0706233{col 67}{space 3}-.0166556
+{txt}{space 12} {c |}
+{space 4}LGASPCAR {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .9287855{col 26}{space 2} .0161576{col 37}{space 1}   57.48{col 46}{space 3}0.000{col 54}{space 4} .8969966{col 67}{space 3} .9605744
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}  .254099{col 26}{space 2} .0515517{col 37}{space 1}    4.93{col 46}{space 3}0.000{col 54}{space 4} .1526746{col 67}{space 3} .3555234
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. eststo OLS_M2
+
+. scalar b1aa = _b[LINCOMEP]
+
+. scalar b2aa = _b[LRPMG]
+
+. scalar b3aa = _b[LCARPCAP]
+
+. scalar lambdaaa = _b[L.LGASPCAR]
+
+. scalar constantaa = _b[_cons]
+
+. *Within Regression (Fixed Effect)
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       324
+{txt}Group variable: {res}numerical_~y{txt}{col 49}Number of groups{col 67}={col 69}{res}        18
+
+{txt}R-squared:{col 49}Obs per group:
+     Within  = {res}0.9403{col 63}{txt}min{col 67}={col 69}{res}        18
+{txt}     Between = {res}0.9783{col 63}{txt}avg{col 67}={col 69}{res}      18.0
+{txt}     Overall = {res}0.9721{col 63}{txt}max{col 67}={col 69}{res}        18
+
+{txt}{col 49}F({res}4{txt},{res}302{txt}){col 67}={col 70}{res}  1188.23
+{txt}corr(u_i, Xb) = {res}0.3785{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .1932957{col 26}{space 2} .0484857{col 37}{space 1}    3.99{col 46}{space 3}0.000{col 54}{space 4} .0978831{col 67}{space 3} .2887084
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.1591322{col 26}{space 2} .0268329{col 37}{space 1}   -5.93{col 46}{space 3}0.000{col 54}{space 4}-.2119354{col 67}{space 3}-.1063289
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.1860584{col 26}{space 2} .0267244{col 37}{space 1}   -6.96{col 46}{space 3}0.000{col 54}{space 4}-.2386481{col 67}{space 3}-.1334687
+{txt}{space 12} {c |}
+{space 4}LGASPCAR {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .6920107{col 26}{space 2}  .030197{col 37}{space 1}   22.92{col 46}{space 3}0.000{col 54}{space 4} .6325875{col 67}{space 3}  .751434
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .7263807{col 26}{space 2} .1510072{col 37}{space 1}    4.81{col 46}{space 3}0.000{col 54}{space 4} .4292211{col 67}{space 3}  1.02354
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res}  .0829497
+     {txt}sigma_e {c |} {res} .05228846
+         {txt}rho {c |} {res} .71563621{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}17{txt}, {res}302{txt}) = {res}8.44{col 62}{txt}Prob > F = {res}0.0000
+
+{com}. eststo Within_M2
+
+. scalar b1bb = _b[LINCOMEP]
+
+. scalar b2bb = _b[LRPMG]
+
+. scalar b3bb = _b[LCARPCAP]
+
+. scalar lambdabb = _b[L.LGASPCAR]
+
+. scalar constantbb = _b[_cons]
+
+. *Random Effect Model 1: Amemiya (2SGLS) 
+
+. xthtaylor LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR numerical_country, endog(LRPMG LCARPCAP) am
+
+{txt}Amemiya–MaCurdy estimation{col 49}Number of obs{col 67}={col 69}{res}       324
+{txt}Group variable: {res}numerical_~y{txt}{col 49}Number of groups{col 67}={col 69}{res}        18
+
+{txt}Time variable: {res}YEAR{txt}{col 49}Obs per group:
+{col 63}min{col 67}={col 69}{res}        18
+{txt}{col 63}avg{col 67}={col 69}{res}        18
+{txt}{col 63}max{col 67}={col 69}{res}        18
+
+{txt}Random effects u_i ~ {res}i.i.d.{txt}{col 49}Wald chi2({res}5{txt}){col 67}={col 69}{res}   5478.28
+{col 49}{txt}Prob > chi2{col 67}={res}{col 73}0.0000
+
+{txt}{hline 13}{c TT}{hline 64}
+    LGASPCAR {c |}{col 16}Coefficient{col 29}Std. err.{col 44}z{col 49}P>|z|{col 59}[95% conf. interval]
+{hline 13}{c +}{hline 64}
+{res}TVexogenous{txt}{col 14}{c |}
+    LINCOMEP {c |}{res}{col 17} .1633471{col 28} .0326761{col 39}   5.00{col 49}0.000{col 58}  .099303{col 70} .2273911
+    {txt}LGASPCAR {c |}
+         L1. {c |}{res}{col 17} .7334686{col 28} .0271779{col 39}  26.99{col 49}0.000{col 58} .6802009{col 70} .7867362
+TVendogenous{txt}{col 14}{c |}
+       LRPMG {c |}{res}{col 17}-.1707571{col 28} .0238472{col 39}  -7.16{col 49}0.000{col 58}-.2174967{col 70}-.1240175
+    {txt}LCARPCAP {c |}{res}{col 17}-.1594904{col 28} .0210675{col 39}  -7.57{col 49}0.000{col 58}-.2007819{col 70}-.1181989
+TIexogenous{txt}{col 14}{c |}
+numerical_~y {c |}{res}{col 17} .0002465{col 28} .0037185{col 39}   0.07{col 49}0.947{col 58}-.0070415{col 70} .0075346
+{txt}{col 14}{c |}
+       _cons {c |}{res}{col 17} .5948952{col 28} .1048752{col 39}   5.67{col 49}0.000{col 58} .3893437{col 70} .8004468
+{txt}{hline 13}{c +}{hline 64}
+     sigma_u {c |} {res} .07928646
+{txt}     sigma_e {c |} {res} .05194558
+{txt}         rho {c |} {res} .69967306{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+Note: {res}TV{txt} refers to time varying; {res}TI{txt} refers to time invariant.
+
+{com}. eststo RE_Amemiya_M2
+
+. scalar b1cc = _b[LINCOMEP]
+
+. scalar b2cc = _b[LRPMG]
+
+. scalar b3cc = _b[LCARPCAP]
+
+. scalar lambdacc = _b[L.LGASPCAR]
+
+. scalar constantcc = _b[_cons]
+
+. *Random Effect Model 2: Swamy&Arora (2SGLS)
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR, re theta
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       324
+{txt}Group variable: {res}numerical_~y                    {txt}Number of groups  = {res}        18
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.9362                                         {txt}min = {res}        18
+{txt}     Between = {res}0.9952                                         {txt}avg = {res}      18.0
+{txt}     Overall = {res}0.9861                                         {txt}max = {res}        18
+
+                                                {txt}Wald chi2({res}4{txt})      =  {res} 10046.95
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+{txt}theta        = {res}.51973752
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .1320564{col 26}{space 2} .0234133{col 37}{space 1}    5.64{col 46}{space 3}0.000{col 54}{space 4} .0861672{col 67}{space 3} .1779457
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.1443785{col 26}{space 2} .0210942{col 37}{space 1}   -6.84{col 46}{space 3}0.000{col 54}{space 4}-.1857225{col 67}{space 3}-.1030346
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.1054016{col 26}{space 2} .0174929{col 37}{space 1}   -6.03{col 46}{space 3}0.000{col 54}{space 4}-.1396871{col 67}{space 3}-.0711161
+{txt}{space 12} {c |}
+{space 4}LGASPCAR {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .8416961{col 26}{space 2} .0215088{col 37}{space 1}   39.13{col 46}{space 3}0.000{col 54}{space 4} .7995397{col 67}{space 3} .8838526
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .4399933{col 26}{space 2} .0704234{col 37}{space 1}    6.25{col 46}{space 3}0.000{col 54}{space 4}  .301966{col 67}{space 3} .5780207
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res}  .0225088
+     {txt}sigma_e {c |} {res} .05228846
+         {txt}rho {c |} {res} .15633706{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. eststo RE_SwamyArora_M2
+
+. scalar b1dd = _b[LINCOMEP]
+
+. scalar b2dd = _b[LRPMG]
+
+. scalar b3dd = _b[LCARPCAP]
+
+. scalar lambdadd = _b[L.LGASPCAR]
+
+. scalar constantdd = _b[_cons]
+
+. *TABLE III
+
+. * Create a Matrix for the Coefficients
+
+. matrix coefficients = (b1aa, b2aa, b3aa, lambdaaa, constantaa, b1bb, b2bb, b3bb, lambdabb, constantbb, b1cc, b2cc, b3cc, lambdacc, constantcc, b1dd, b2dd, b3dd, lambdadd, constantdd)
+
+. 
+. * Create a Table of the Coefficients
+
+. matrix tabloüç = J(4, 5, .)
+
+. matrix tabloüç[1, 1] = coefficients[1, 1]
+
+. matrix tabloüç[1, 2] = coefficients[1, 2]
+
+. matrix tabloüç[1, 3] = coefficients[1, 3]
+
+. matrix tabloüç[1, 4] = coefficients[1, 4]
+
+. matrix tabloüç[1, 5] = coefficients[1, 5]
+
+. matrix tabloüç[2, 1] = coefficients[1, 6]
+
+. matrix tabloüç[2, 2] = coefficients[1, 7]
+
+. matrix tabloüç[2, 3] = coefficients[1, 8]
+
+. matrix tabloüç[2, 4] = coefficients[1, 9]
+
+. matrix tabloüç[2, 5] = coefficients[1, 10]
+
+. matrix tabloüç[3, 1] = coefficients[1, 11]
+
+. matrix tabloüç[3, 2] = coefficients[1, 12]
+
+. matrix tabloüç[3, 3] = coefficients[1, 13]
+
+. matrix tabloüç[3, 4] = coefficients[1, 14]
+
+. matrix tabloüç[3, 5] = coefficients[1, 15]
+
+. matrix tabloüç[4, 1] = coefficients[1, 16]
+
+. matrix tabloüç[4, 2] = coefficients[1, 17]
+
+. matrix tabloüç[4, 3] = coefficients[1, 18]
+
+. matrix tabloüç[4, 4] = coefficients[1, 19]
+
+. matrix tabloüç[4, 5] = coefficients[1, 20]
+
+. 
+. * Add Row and Column Labels
+
+. matrix rownames tabloüç = "OLS" "Within" "Amemiya" "Swamy&Arora"
+
+. matrix colnames tabloüç = "LINCOMEP" "LRPMG" "LCARPCAP" "L.LGASPCAR" "Const."
+
+. 
+. * Display the Matrix Table
+
+. matrix list tabloüç
+{res}
+{txt}tabloüç[4,5]
+                                                          L.            
+               LINCOMEP       LRPMG    LCARPCAP    LGASPCAR      Const.
+        OLS {res}  .06647615  -.07827209  -.04363944   .92878551     .254099
+{txt}     Within {res}  .19329572  -.15913216  -.18605841   .69201072   .72638068
+{txt}    Amemiya {res}  .16334705  -.17075711  -.15949041   .73346857   .59489523
+{txt}Swamy&Arora {res}  .13205644  -.14437854  -.10540162   .84169614   .43999334
+{reset}
+{com}. 
+. *Save the Table
+
+. log using "tabloüç.log", replace
+{err}log file already open
+{txt}{search r(604), local:r(604);}
+
+{com}. matrix list tabloüç
+{res}
+{txt}tabloüç[4,5]
+                                                          L.            
+               LINCOMEP       LRPMG    LCARPCAP    LGASPCAR      Const.
+        OLS {res}  .06647615  -.07827209  -.04363944   .92878551     .254099
+{txt}     Within {res}  .19329572  -.15913216  -.18605841   .69201072   .72638068
+{txt}    Amemiya {res}  .16334705  -.17075711  -.15949041   .73346857   .59489523
+{txt}Swamy&Arora {res}  .13205644  -.14437854  -.10540162   .84169614   .43999334
+{reset}
+{com}. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}/Users/macbookpro/Desktop/ECON426_Paper_Script.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res} 9 May 2023, 11:32:05
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/macbookpro/Desktop/ECON426_Paper_Script.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 9 May 2023, 11:33:30
+
+{com}. 
+. *PART IV: Long Run Elasticity Estimators for MODEL II & TABLE IV
+
+. *OLS Long Run Elasticity Estimators: MODEL II 
+
+. reg LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       324
+{txt}{hline 13}{c +}{hline 34}   F(4, 319)       = {res}  6101.33
+{txt}       Model {c |} {res} 93.1822982         4  23.2955746   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 1.21797772       319  .003818112   {txt}R-squared       ={res}    0.9871
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.9869
+{txt}       Total {c |} {res}  94.400276       323  .292260916   {txt}Root MSE        =   {res} .06179
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .0664762{col 26}{space 2}  .017923{col 37}{space 1}    3.71{col 46}{space 3}0.000{col 54}{space 4} .0312139{col 67}{space 3} .1017384
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.0782721{col 26}{space 2} .0168226{col 37}{space 1}   -4.65{col 46}{space 3}0.000{col 54}{space 4}-.1113694{col 67}{space 3}-.0451748
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.0436394{col 26}{space 2} .0137153{col 37}{space 1}   -3.18{col 46}{space 3}0.002{col 54}{space 4}-.0706233{col 67}{space 3}-.0166556
+{txt}{space 12} {c |}
+{space 4}LGASPCAR {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .9287855{col 26}{space 2} .0161576{col 37}{space 1}   57.48{col 46}{space 3}0.000{col 54}{space 4} .8969966{col 67}{space 3} .9605744
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}  .254099{col 26}{space 2} .0515517{col 37}{space 1}    4.93{col 46}{space 3}0.000{col 54}{space 4} .1526746{col 67}{space 3} .3555234
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. scalar b1aae = _b[LINCOMEP]
+
+. scalar b2aae = _b[LRPMG]
+
+. scalar b3aae = _b[LCARPCAP]
+
+. scalar lambdaaae = _b[L.LGASPCAR]
+
+. scalar OLS_per_capita_income_elasticity = b1aae*(1/(1-lambdaaae))
+
+. scalar OLS_gas_price_elasticity = b2aae*(1/(1-lambdaaae))
+
+. scalar OLS_cars_per_capita_elasticity = b3aae*(1/(1-lambdaaae))
+
+. *Within Regression (Fixed Effect) Long Run Elasticity Estimators: MODEL II
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       324
+{txt}Group variable: {res}numerical_~y{txt}{col 49}Number of groups{col 67}={col 69}{res}        18
+
+{txt}R-squared:{col 49}Obs per group:
+     Within  = {res}0.9403{col 63}{txt}min{col 67}={col 69}{res}        18
+{txt}     Between = {res}0.9783{col 63}{txt}avg{col 67}={col 69}{res}      18.0
+{txt}     Overall = {res}0.9721{col 63}{txt}max{col 67}={col 69}{res}        18
+
+{txt}{col 49}F({res}4{txt},{res}302{txt}){col 67}={col 70}{res}  1188.23
+{txt}corr(u_i, Xb) = {res}0.3785{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .1932957{col 26}{space 2} .0484857{col 37}{space 1}    3.99{col 46}{space 3}0.000{col 54}{space 4} .0978831{col 67}{space 3} .2887084
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.1591322{col 26}{space 2} .0268329{col 37}{space 1}   -5.93{col 46}{space 3}0.000{col 54}{space 4}-.2119354{col 67}{space 3}-.1063289
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.1860584{col 26}{space 2} .0267244{col 37}{space 1}   -6.96{col 46}{space 3}0.000{col 54}{space 4}-.2386481{col 67}{space 3}-.1334687
+{txt}{space 12} {c |}
+{space 4}LGASPCAR {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .6920107{col 26}{space 2}  .030197{col 37}{space 1}   22.92{col 46}{space 3}0.000{col 54}{space 4} .6325875{col 67}{space 3}  .751434
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .7263807{col 26}{space 2} .1510072{col 37}{space 1}    4.81{col 46}{space 3}0.000{col 54}{space 4} .4292211{col 67}{space 3}  1.02354
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res}  .0829497
+     {txt}sigma_e {c |} {res} .05228846
+         {txt}rho {c |} {res} .71563621{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}17{txt}, {res}302{txt}) = {res}8.44{col 62}{txt}Prob > F = {res}0.0000
+
+{com}. scalar b1bbe = _b[LINCOMEP]
+
+. scalar b2bbe = _b[LRPMG]
+
+. scalar b3bbe = _b[LCARPCAP]
+
+. scalar lambdabbe = _b[L.LGASPCAR]
+
+. scalar FE_per_capita_income_elasticity = b1bbe*(1/(1-lambdabbe))
+
+. scalar FE_gas_price_elasticity = b2bbe*(1/(1-lambdabbe))
+
+. scalar FE_cars_per_capita_elasticity = b3bbe*(1/(1-lambdabbe))
+
+. *Random Effect Model 1: Amemiya (2SGLS) Long Run Elasticity Estimators: MODEL II 
+
+. xthtaylor LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR numerical_country, endog(LRPMG LCARPCAP) am
+
+{txt}Amemiya–MaCurdy estimation{col 49}Number of obs{col 67}={col 69}{res}       324
+{txt}Group variable: {res}numerical_~y{txt}{col 49}Number of groups{col 67}={col 69}{res}        18
+
+{txt}Time variable: {res}YEAR{txt}{col 49}Obs per group:
+{col 63}min{col 67}={col 69}{res}        18
+{txt}{col 63}avg{col 67}={col 69}{res}        18
+{txt}{col 63}max{col 67}={col 69}{res}        18
+
+{txt}Random effects u_i ~ {res}i.i.d.{txt}{col 49}Wald chi2({res}5{txt}){col 67}={col 69}{res}   5478.28
+{col 49}{txt}Prob > chi2{col 67}={res}{col 73}0.0000
+
+{txt}{hline 13}{c TT}{hline 64}
+    LGASPCAR {c |}{col 16}Coefficient{col 29}Std. err.{col 44}z{col 49}P>|z|{col 59}[95% conf. interval]
+{hline 13}{c +}{hline 64}
+{res}TVexogenous{txt}{col 14}{c |}
+    LINCOMEP {c |}{res}{col 17} .1633471{col 28} .0326761{col 39}   5.00{col 49}0.000{col 58}  .099303{col 70} .2273911
+    {txt}LGASPCAR {c |}
+         L1. {c |}{res}{col 17} .7334686{col 28} .0271779{col 39}  26.99{col 49}0.000{col 58} .6802009{col 70} .7867362
+TVendogenous{txt}{col 14}{c |}
+       LRPMG {c |}{res}{col 17}-.1707571{col 28} .0238472{col 39}  -7.16{col 49}0.000{col 58}-.2174967{col 70}-.1240175
+    {txt}LCARPCAP {c |}{res}{col 17}-.1594904{col 28} .0210675{col 39}  -7.57{col 49}0.000{col 58}-.2007819{col 70}-.1181989
+TIexogenous{txt}{col 14}{c |}
+numerical_~y {c |}{res}{col 17} .0002465{col 28} .0037185{col 39}   0.07{col 49}0.947{col 58}-.0070415{col 70} .0075346
+{txt}{col 14}{c |}
+       _cons {c |}{res}{col 17} .5948952{col 28} .1048752{col 39}   5.67{col 49}0.000{col 58} .3893437{col 70} .8004468
+{txt}{hline 13}{c +}{hline 64}
+     sigma_u {c |} {res} .07928646
+{txt}     sigma_e {c |} {res} .05194558
+{txt}         rho {c |} {res} .69967306{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+Note: {res}TV{txt} refers to time varying; {res}TI{txt} refers to time invariant.
+
+{com}. scalar b1cce = _b[LINCOMEP]
+
+. scalar b2cce = _b[LRPMG]
+
+. scalar b3cce = _b[LCARPCAP]
+
+. scalar lambdacce = _b[L.LGASPCAR]
+
+. scalar Ame_per_capita_income_elasticity = b1cce*(1/(1-lambdacce))
+
+. scalar Ame_gas_price_elasticity = b2cce*(1/(1-lambdacce))
+
+. scalar Ame_cars_per_capita_elasticity = b3cce*(1/(1-lambdacce))
+
+. *Random Effect Model 2: Swamy&Arora (2SGLS) Long Run Elasticity Estimators: MODEL II
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR, re theta
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       324
+{txt}Group variable: {res}numerical_~y                    {txt}Number of groups  = {res}        18
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.9362                                         {txt}min = {res}        18
+{txt}     Between = {res}0.9952                                         {txt}avg = {res}      18.0
+{txt}     Overall = {res}0.9861                                         {txt}max = {res}        18
+
+                                                {txt}Wald chi2({res}4{txt})      =  {res} 10046.95
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+{txt}theta        = {res}.51973752
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .1320564{col 26}{space 2} .0234133{col 37}{space 1}    5.64{col 46}{space 3}0.000{col 54}{space 4} .0861672{col 67}{space 3} .1779457
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.1443785{col 26}{space 2} .0210942{col 37}{space 1}   -6.84{col 46}{space 3}0.000{col 54}{space 4}-.1857225{col 67}{space 3}-.1030346
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.1054016{col 26}{space 2} .0174929{col 37}{space 1}   -6.03{col 46}{space 3}0.000{col 54}{space 4}-.1396871{col 67}{space 3}-.0711161
+{txt}{space 12} {c |}
+{space 4}LGASPCAR {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .8416961{col 26}{space 2} .0215088{col 37}{space 1}   39.13{col 46}{space 3}0.000{col 54}{space 4} .7995397{col 67}{space 3} .8838526
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .4399933{col 26}{space 2} .0704234{col 37}{space 1}    6.25{col 46}{space 3}0.000{col 54}{space 4}  .301966{col 67}{space 3} .5780207
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res}  .0225088
+     {txt}sigma_e {c |} {res} .05228846
+         {txt}rho {c |} {res} .15633706{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. scalar b1dde = _b[LINCOMEP]
+
+. scalar b2dde = _b[LRPMG]
+
+. scalar b3dde = _b[LCARPCAP]
+
+. scalar lambdadde = _b[L.LGASPCAR]
+
+. scalar SA_per_capita_income_elasticity = b1dde*(1/(1-lambdadde))
+
+. scalar SA_gas_price_elasticity = b2dde*(1/(1-lambdadde))
+
+. scalar SA_cars_per_capita_elasticity = b3dde*(1/(1-lambdadde))
+
+. *TABLE IV
+
+. * Create a Matrix of the Elasticities
+
+. matrix elasticity = (OLS_per_capita_income_elasticity, OLS_gas_price_elasticity, OLS_cars_per_capita_elasticity, FE_per_capita_income_elasticity, FE_gas_price_elasticity, FE_cars_per_capita_elasticity, Ame_cars_per_capita_elasticity, Ame_gas_price_elasticity, Ame_per_capita_income_elasticity, SA_per_capita_income_elasticity, SA_gas_price_elasticity, SA_cars_per_capita_elasticity)
+
+. 
+. * Create a Table of the Elasticities
+
+. matrix table = J(4, 3, .)
+
+. matrix table[1, 1] = elasticity[1, 1]
+
+. matrix table[1, 2] = elasticity[1, 2]
+
+. matrix table[1, 3] = elasticity[1, 3]
+
+. matrix table[2, 1] = elasticity[1, 4]
+
+. matrix table[2, 2] = elasticity[1, 5]
+
+. matrix table[2, 3] = elasticity[1, 6]
+
+. matrix table[3, 1] = elasticity[1, 7]
+
+. matrix table[3, 2] = elasticity[1, 8]
+
+. matrix table[3, 3] = elasticity[1, 9]
+
+. matrix table[4, 1] = elasticity[1, 10]
+
+. matrix table[4, 2] = elasticity[1, 11]
+
+. matrix table[4, 3] = elasticity[1, 12]
+
+. 
+. * Add Row and Column Labels
+
+. matrix rownames table = "OLS" "Within" "Amemiya" "Swamy&Arora"
+
+. matrix colnames table = "Y/N" "Pmg/Pgdp" "CAR/N"
+
+. 
+. * Display the Matrix Table
+
+. matrix list table
+{res}
+{txt}table[4,3]
+                    Y/N    Pmg/Pgdp       CAR/N
+        OLS {res}  .93346385  -1.0991034  -.61278873
+{txt}     Within {res}  .62760535  -.51668083  -.60410679
+{txt}    Amemiya {res} -.59839252  -.64066408   .61286226
+{txt}Swamy&Arora {res}  .83419591   -.9120342  -.66581836
+{reset}
+{com}. 
+. *Save the Table
+
+. log using "tablodört.log", replace
+{err}log file already open
+{txt}{search r(604), local:r(604);}
+
+{com}. matrix list table
+{res}
+{txt}table[4,3]
+                    Y/N    Pmg/Pgdp       CAR/N
+        OLS {res}  .93346385  -1.0991034  -.61278873
+{txt}     Within {res}  .62760535  -.51668083  -.60410679
+{txt}    Amemiya {res} -.59839252  -.64066408   .61286226
+{txt}Swamy&Arora {res}  .83419591   -.9120342  -.66581836
+{reset}
+{com}. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}/Users/macbookpro/Desktop/ECON426_Paper_Script.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res} 9 May 2023, 11:34:15
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/macbookpro/Desktop/ECON426_Paper_Script.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 9 May 2023, 11:35:11
+
+{com}. 
+. *PART V: TESTS for MODEL I and MODEL II
+
+. 
+. *Roy-Zellner Test for Poolability (Panel Data OLS coefficients vs. Random Effect Model I [Amemiya] coefficients)
+
+. *Create Panel Data OLS (Unpooled OLS) for MODEL I
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       342
+{txt}Group variable: {res}numerical_~y                    {txt}Number of groups  = {res}        18
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.8363                                         {txt}min = {res}        19
+{txt}     Between = {res}0.7099                                         {txt}avg = {res}      19.0
+{txt}     Overall = {res}0.7309                                         {txt}max = {res}        19
+
+                                                {txt}Wald chi2({res}3{txt})      =  {res}  1642.20
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .5549857{col 26}{space 2} .0591282{col 37}{space 1}    9.39{col 46}{space 3}0.000{col 54}{space 4} .4390966{col 67}{space 3} .6708748
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.4203892{col 26}{space 2} .0399781{col 37}{space 1}  -10.52{col 46}{space 3}0.000{col 54}{space 4} -.498745{col 67}{space 3}-.3420335
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.6068401{col 26}{space 2}  .025515{col 37}{space 1}  -23.78{col 46}{space 3}0.000{col 54}{space 4}-.6568487{col 67}{space 3}-.5568316
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 1.996698{col 26}{space 2}  .184326{col 37}{space 1}   10.83{col 46}{space 3}0.000{col 54}{space 4} 1.635426{col 67}{space 3} 2.357971
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} .19554465
+     {txt}sigma_e {c |} {res} .09233035
+         {txt}rho {c |} {res} .81769849{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. eststo UnpooledOLS_M1
+
+. scalar b1z = _b[LINCOMEP]
+
+. scalar b2z = _b[LRPMG]
+
+. scalar b3z = _b[LCARPCAP]
+
+. scalar constantz = _b[_cons]
+
+. *The R-Z Test for MODEL I
+
+. test(b1z=b1d)(b2z=b2d)(b3z=b3d)
+
+{p 0 7}{space 1}{text:( 1)}{space 1}{res}= .0466733{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1}{res}= .0550091{p_end}
+{p 0 7}{space 1}{text:( 3)}{space 1}{res}= -.0135684{p_end}
+{txt}       Constraint 1 dropped
+       Constraint 2 dropped
+       Constraint 3 dropped
+
+{col 12}chi2(  0) ={res}       .
+{txt}{col 10}Prob > chi2 =  {res}       .
+
+{com}. *reject poolability as p<0.05 (roughly) for MODEL I
+
+. *Roy-Zellner Test for Poolability (Panel Data OLS coefficients vs. Random Effect Model II [Amemiya] coefficients)
+
+. *Create Panel Data OLS (Unpooled OLS) for MODEL II
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       324
+{txt}Group variable: {res}numerical_~y                    {txt}Number of groups  = {res}        18
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.9362                                         {txt}min = {res}        18
+{txt}     Between = {res}0.9952                                         {txt}avg = {res}      18.0
+{txt}     Overall = {res}0.9861                                         {txt}max = {res}        18
+
+                                                {txt}Wald chi2({res}4{txt})      =  {res} 10046.95
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .1320564{col 26}{space 2} .0234133{col 37}{space 1}    5.64{col 46}{space 3}0.000{col 54}{space 4} .0861672{col 67}{space 3} .1779457
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.1443785{col 26}{space 2} .0210942{col 37}{space 1}   -6.84{col 46}{space 3}0.000{col 54}{space 4}-.1857225{col 67}{space 3}-.1030346
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.1054016{col 26}{space 2} .0174929{col 37}{space 1}   -6.03{col 46}{space 3}0.000{col 54}{space 4}-.1396871{col 67}{space 3}-.0711161
+{txt}{space 12} {c |}
+{space 4}LGASPCAR {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .8416961{col 26}{space 2} .0215088{col 37}{space 1}   39.13{col 46}{space 3}0.000{col 54}{space 4} .7995397{col 67}{space 3} .8838526
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .4399933{col 26}{space 2} .0704234{col 37}{space 1}    6.25{col 46}{space 3}0.000{col 54}{space 4}  .301966{col 67}{space 3} .5780207
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res}  .0225088
+     {txt}sigma_e {c |} {res} .05228846
+         {txt}rho {c |} {res} .15633706{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. eststo UnpooledOLS_M2
+
+. scalar b1zz = _b[LINCOMEP]
+
+. scalar b2zz = _b[LRPMG]
+
+. scalar b3zz = _b[LCARPCAP]
+
+. scalar lambdazz = _b[L.LGASPCAR]
+
+. scalar constantzz = _b[_cons]
+
+. *The R-Z Test for MODEL II
+
+. test(b1zz=b1cc)(b2zz=b2cc) (b3zz=b3cc) (lambdazz=lambdacc)  
+
+{p 0 7}{space 1}{text:( 1)}{space 1}{res}= .0312906{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1}{res}= -.0263786{p_end}
+{p 0 7}{space 1}{text:( 3)}{space 1}{res}= -.0540888{p_end}
+{p 0 7}{space 1}{text:( 4)}{space 1}{res}= -.1082276{p_end}
+{txt}       Constraint 1 dropped
+       Constraint 2 dropped
+       Constraint 3 dropped
+       Constraint 4 dropped
+
+{col 12}chi2(  0) ={res}       .
+{txt}{col 10}Prob > chi2 =  {res}       .
+
+{com}. *reject poolability as p<0.05 (roughly) for MODEL II
+
+. 
+. *B-P LM Test for the Error Components Models of MODEL I and MODEL II 
+
+. *B-P LM Test on the Error Components Model (Static: MODEL I)
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP, re
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       342
+{txt}Group variable: {res}numerical_~y                    {txt}Number of groups  = {res}        18
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.8363                                         {txt}min = {res}        19
+{txt}     Between = {res}0.7099                                         {txt}avg = {res}      19.0
+{txt}     Overall = {res}0.7309                                         {txt}max = {res}        19
+
+                                                {txt}Wald chi2({res}3{txt})      =  {res}  1642.20
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .5549857{col 26}{space 2} .0591282{col 37}{space 1}    9.39{col 46}{space 3}0.000{col 54}{space 4} .4390966{col 67}{space 3} .6708748
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.4203892{col 26}{space 2} .0399781{col 37}{space 1}  -10.52{col 46}{space 3}0.000{col 54}{space 4} -.498745{col 67}{space 3}-.3420335
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.6068401{col 26}{space 2}  .025515{col 37}{space 1}  -23.78{col 46}{space 3}0.000{col 54}{space 4}-.6568487{col 67}{space 3}-.5568316
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 1.996698{col 26}{space 2}  .184326{col 37}{space 1}   10.83{col 46}{space 3}0.000{col 54}{space 4} 1.635426{col 67}{space 3} 2.357971
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} .19554465
+     {txt}sigma_e {c |} {res} .09233035
+         {txt}rho {c |} {res} .81769849{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. xttest0
+
+{txt}Breusch and Pagan Lagrangian multiplier test for random effects
+
+        LGASPCAR[numerical_country,t] = Xb + u[numerical_country] + e[numerical_country,t]
+
+{col 9}Estimated results:
+{col 26}{c |}{col 34}Var{col 42}SD = sqrt(Var)
+{col 17}{hline 9}{c +}{hline 29}
+{col 16} LGASPCAR {c |}  {res}  .301299       .5489071
+{col 24}{txt}e {c |}  {res} .0085249       .0923303
+{col 24}{txt}u {c |}  {res} .0382377       .1955447
+
+{txt}{col 9}Test: Var(u) = 0
+{col 30}{help j_chibar:chibar2(01)} ={col 44}{res} 1465.55
+{txt}{col 27}Prob > chibar2 = {col 45}{res} 0.0000
+
+{com}. *Random Effects Model is appropriate for MODEL I
+
+. *B-P LM Test on the Error Components Model (Dynamic: MODEL II)
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR, re
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       324
+{txt}Group variable: {res}numerical_~y                    {txt}Number of groups  = {res}        18
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.9362                                         {txt}min = {res}        18
+{txt}     Between = {res}0.9952                                         {txt}avg = {res}      18.0
+{txt}     Overall = {res}0.9861                                         {txt}max = {res}        18
+
+                                                {txt}Wald chi2({res}4{txt})      =  {res} 10046.95
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .1320564{col 26}{space 2} .0234133{col 37}{space 1}    5.64{col 46}{space 3}0.000{col 54}{space 4} .0861672{col 67}{space 3} .1779457
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.1443785{col 26}{space 2} .0210942{col 37}{space 1}   -6.84{col 46}{space 3}0.000{col 54}{space 4}-.1857225{col 67}{space 3}-.1030346
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.1054016{col 26}{space 2} .0174929{col 37}{space 1}   -6.03{col 46}{space 3}0.000{col 54}{space 4}-.1396871{col 67}{space 3}-.0711161
+{txt}{space 12} {c |}
+{space 4}LGASPCAR {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .8416961{col 26}{space 2} .0215088{col 37}{space 1}   39.13{col 46}{space 3}0.000{col 54}{space 4} .7995397{col 67}{space 3} .8838526
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .4399933{col 26}{space 2} .0704234{col 37}{space 1}    6.25{col 46}{space 3}0.000{col 54}{space 4}  .301966{col 67}{space 3} .5780207
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res}  .0225088
+     {txt}sigma_e {c |} {res} .05228846
+         {txt}rho {c |} {res} .15633706{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. xttest0
+
+{txt}Breusch and Pagan Lagrangian multiplier test for random effects
+
+        LGASPCAR[numerical_country,t] = Xb + u[numerical_country] + e[numerical_country,t]
+
+{col 9}Estimated results:
+{col 26}{c |}{col 34}Var{col 42}SD = sqrt(Var)
+{col 17}{hline 9}{c +}{hline 29}
+{col 16} LGASPCAR {c |}  {res} .2922609       .5406116
+{col 24}{txt}e {c |}  {res} .0027341       .0522885
+{col 24}{txt}u {c |}  {res} .0005066       .0225088
+
+{txt}{col 9}Test: Var(u) = 0
+{col 30}{help j_chibar:chibar2(01)} ={col 44}{res}   48.14
+{txt}{col 27}Prob > chibar2 = {col 45}{res} 0.0000
+
+{com}. *Random Effects Model is appropriate for MODEL II
+
+. 
+. *Durbin-Wu-Hausman Specification Test (Static: MODEL I) (RE[Amemiya] vs. FE)
+
+. hausman Within_M1 RE_Amemiya_M1
+
+{txt}{col 18}{hline 4} Coefficients {hline 4}
+{col 14}{c |}{col 21}(b){col 34}(B){col 49}(b-B){col 59}sqrt(diag(V_b-V_B))
+{col 14}{c |}{col 17} Within_M1  {col 30}RE_Amemiya~1{col 46}Difference{col 63}Std. err.
+{hline 13}{c +}{hline 64}
+{space 4}LINCOMEP {c |}{res}{col 18} .6622497{col 31}  .601659{col 47} .0605906{col 63} .0329343
+{txt}{space 7}LRPMG {c |}{res}{col 18}-.3217025{col 31}-.3653802{col 47} .0436777{col 63} .0145406
+{txt}{space 4}LCARPCAP {c |}{res}{col 18}-.6404829{col 31}-.6204085{col 47}-.0200744{col 63} .0117677
+{txt}{hline 13}{c BT}{hline 64}
+{ralign 78:b = Consistent under H0 and Ha; obtained from {bf:xtreg}.}
+{ralign 78:B = Inconsistent under Ha, efficient under H0; obtained from {bf:xthtaylor}.}
+
+Test of H0: Difference in coefficients not systematic
+
+{ralign 11:chi2({res:3})} = (b-B)'[(V_b-V_B)^(-1)](b-B)
+{ralign 11:} = {res:{ralign 6:10.81}}
+{ralign 11:Prob > chi2} = {res:{ralign 6:0.0128}}
+
+{com}. *Durbin-Wu-Hausman Specification Test (Static: MODEL I) (RE[S&A] vs. FE)
+
+. hausman Within_M1 RE_SwamyArora_M1
+
+{txt}{col 18}{hline 4} Coefficients {hline 4}
+{col 14}{c |}{col 21}(b){col 34}(B){col 49}(b-B){col 59}sqrt(diag(V_b-V_B))
+{col 14}{c |}{col 17} Within_M1  {col 30}RE_SwamyAr~1{col 46}Difference{col 63}Std. err.
+{hline 13}{c +}{hline 64}
+{space 4}LINCOMEP {c |}{res}{col 18} .6622497{col 31} .5549857{col 47}  .107264{col 63} .0434669
+{txt}{space 7}LRPMG {c |}{res}{col 18}-.3217025{col 31}-.4203892{col 47} .0986868{col 63} .0186143
+{txt}{space 4}LCARPCAP {c |}{res}{col 18}-.6404829{col 31}-.6068401{col 47}-.0336428{col 63} .0151597
+{txt}{hline 13}{c BT}{hline 64}
+{ralign 78:b = Consistent under H0 and Ha; obtained from {bf:xtreg}.}
+{ralign 78:B = Inconsistent under Ha, efficient under H0; obtained from {bf:xtreg}.}
+
+Test of H0: Difference in coefficients not systematic
+
+{ralign 11:chi2({res:3})} = (b-B)'[(V_b-V_B)^(-1)](b-B)
+{ralign 11:} = {res:{ralign 6:302.80}}
+{ralign 11:Prob > chi2} = {res:{ralign 6:0.0000}}
+(V_b-V_B is not positive definite)
+
+{com}. 
+. *OLD NON-TRANSPOSED TABLES
+
+. 
+. import excel "/Users/macbookpro/Desktop/ECON426 Research Project/Gasoline.xlsx", sheet("Gasoline.txt") firstrow
+{res}{err}no; data in memory would be lost
+{res}{txt}{search r(4), local:r(4);}
+
+{com}. 
+. 
+. *SET PANEL VARIABLE
+
+. encode COUNTRY, gen(numerical_country)
+{err}variable {bf}numerical_country{sf} already defined
+{txt}{search r(110), local:r(110);}
+
+{com}. xtset numerical_country YEAR
+{res}
+{col 1}{txt:Panel variable: }{res:numerical_country}{txt: (strongly balanced)}
+{p 1 16 2}{txt:Time variable: }{res:YEAR}{txt:, }{res:{bind:1960}}{txt: to }{res:{bind:1978}}{p_end}
+{txt}{col 10}Delta: {res}1 unit
+
+{com}. 
+. *-----------------------------------------------------------------------------
+
+. *PART I: MODELS I&II
+
+. 
+. *MODEL I 
+
+. reg LGASPCAR LINCOMEP LRPMG LCARPCAP
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       342
+{txt}{hline 13}{c +}{hline 34}   F(3, 338)       = {res}   664.00
+{txt}       Model {c |} {res} 87.8386069         3  29.2795356   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 14.9043574       338  .044095732   {txt}R-squared       ={res}    0.8549
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8536
+{txt}       Total {c |} {res} 102.742964       341  .301299016   {txt}Root MSE        =   {res} .20999
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .8899617{col 26}{space 2} .0358058{col 37}{space 1}   24.86{col 46}{space 3}0.000{col 54}{space 4} .8195314{col 67}{space 3}  .960392
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.8917979{col 26}{space 2} .0303147{col 37}{space 1}  -29.42{col 46}{space 3}0.000{col 54}{space 4}-.9514272{col 67}{space 3}-.8321686
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.7633727{col 26}{space 2} .0186083{col 37}{space 1}  -41.02{col 46}{space 3}0.000{col 54}{space 4}-.7999754{col 67}{space 3}-.7267701
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 2.391326{col 26}{space 2} .1169343{col 37}{space 1}   20.45{col 46}{space 3}0.000{col 54}{space 4} 2.161315{col 67}{space 3} 2.621336
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. eststo MODELI
+
+. 
+. *MODEL II (without the lagged dependent variable) = MODEL I
+
+. reg LGASPCAR LINCOMEP LRPMG LCARPCAP
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       342
+{txt}{hline 13}{c +}{hline 34}   F(3, 338)       = {res}   664.00
+{txt}       Model {c |} {res} 87.8386069         3  29.2795356   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 14.9043574       338  .044095732   {txt}R-squared       ={res}    0.8549
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8536
+{txt}       Total {c |} {res} 102.742964       341  .301299016   {txt}Root MSE        =   {res} .20999
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .8899617{col 26}{space 2} .0358058{col 37}{space 1}   24.86{col 46}{space 3}0.000{col 54}{space 4} .8195314{col 67}{space 3}  .960392
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.8917979{col 26}{space 2} .0303147{col 37}{space 1}  -29.42{col 46}{space 3}0.000{col 54}{space 4}-.9514272{col 67}{space 3}-.8321686
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.7633727{col 26}{space 2} .0186083{col 37}{space 1}  -41.02{col 46}{space 3}0.000{col 54}{space 4}-.7999754{col 67}{space 3}-.7267701
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 2.391326{col 26}{space 2} .1169343{col 37}{space 1}   20.45{col 46}{space 3}0.000{col 54}{space 4} 2.161315{col 67}{space 3} 2.621336
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. 
+. *Let's also include the lagged dependent variable for MODEL II
+
+. reg LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       324
+{txt}{hline 13}{c +}{hline 34}   F(4, 319)       = {res}  6101.33
+{txt}       Model {c |} {res} 93.1822982         4  23.2955746   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 1.21797772       319  .003818112   {txt}R-squared       ={res}    0.9871
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.9869
+{txt}       Total {c |} {res}  94.400276       323  .292260916   {txt}Root MSE        =   {res} .06179
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .0664762{col 26}{space 2}  .017923{col 37}{space 1}    3.71{col 46}{space 3}0.000{col 54}{space 4} .0312139{col 67}{space 3} .1017384
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.0782721{col 26}{space 2} .0168226{col 37}{space 1}   -4.65{col 46}{space 3}0.000{col 54}{space 4}-.1113694{col 67}{space 3}-.0451748
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.0436394{col 26}{space 2} .0137153{col 37}{space 1}   -3.18{col 46}{space 3}0.002{col 54}{space 4}-.0706233{col 67}{space 3}-.0166556
+{txt}{space 12} {c |}
+{space 4}LGASPCAR {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .9287855{col 26}{space 2} .0161576{col 37}{space 1}   57.48{col 46}{space 3}0.000{col 54}{space 4} .8969966{col 67}{space 3} .9605744
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}  .254099{col 26}{space 2} .0515517{col 37}{space 1}    4.93{col 46}{space 3}0.000{col 54}{space 4} .1526746{col 67}{space 3} .3555234
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. 
+. *-----------------------------------------------------------------------------
+
+. *PART II:Estimation Techniques for MODEL I & TABLE II
+
+. *Estimation Techniques for MODEL I
+
+. *OLS
+
+. reg LGASPCAR LINCOMEP LRPMG LCARPCAP
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       342
+{txt}{hline 13}{c +}{hline 34}   F(3, 338)       = {res}   664.00
+{txt}       Model {c |} {res} 87.8386069         3  29.2795356   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 14.9043574       338  .044095732   {txt}R-squared       ={res}    0.8549
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.8536
+{txt}       Total {c |} {res} 102.742964       341  .301299016   {txt}Root MSE        =   {res} .20999
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .8899617{col 26}{space 2} .0358058{col 37}{space 1}   24.86{col 46}{space 3}0.000{col 54}{space 4} .8195314{col 67}{space 3}  .960392
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.8917979{col 26}{space 2} .0303147{col 37}{space 1}  -29.42{col 46}{space 3}0.000{col 54}{space 4}-.9514272{col 67}{space 3}-.8321686
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.7633727{col 26}{space 2} .0186083{col 37}{space 1}  -41.02{col 46}{space 3}0.000{col 54}{space 4}-.7999754{col 67}{space 3}-.7267701
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 2.391326{col 26}{space 2} .1169343{col 37}{space 1}   20.45{col 46}{space 3}0.000{col 54}{space 4} 2.161315{col 67}{space 3} 2.621336
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. eststo OLS_M1
+
+. *Within Regression (Fixed Effect)
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       342
+{txt}Group variable: {res}numerical_~y{txt}{col 49}Number of groups{col 67}={col 69}{res}        18
+
+{txt}R-squared:{col 49}Obs per group:
+     Within  = {res}0.8396{col 63}{txt}min{col 67}={col 69}{res}        19
+{txt}     Between = {res}0.5755{col 63}{txt}avg{col 67}={col 69}{res}      19.0
+{txt}     Overall = {res}0.6150{col 63}{txt}max{col 67}={col 69}{res}        19
+
+{txt}{col 49}F({res}3{txt},{res}321{txt}){col 67}={col 70}{res}   560.09
+{txt}corr(u_i, Xb) = {res}-0.2468{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .6622497{col 26}{space 2}  .073386{col 37}{space 1}    9.02{col 46}{space 3}0.000{col 54}{space 4} .5178713{col 67}{space 3}  .806628
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.3217025{col 26}{space 2} .0440993{col 37}{space 1}   -7.29{col 46}{space 3}0.000{col 54}{space 4}-.4084625{col 67}{space 3}-.2349424
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.6404829{col 26}{space 2} .0296789{col 37}{space 1}  -21.58{col 46}{space 3}0.000{col 54}{space 4}-.6988725{col 67}{space 3}-.5820933
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}  2.40267{col 26}{space 2} .2253094{col 37}{space 1}   10.66{col 46}{space 3}0.000{col 54}{space 4}   1.9594{col 67}{space 3} 2.845939
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} .34841288
+     {txt}sigma_e {c |} {res} .09233035
+         {txt}rho {c |} {res} .93438171{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}17{txt}, {res}321{txt}) = {res}83.96{col 62}{txt}Prob > F = {res}0.0000
+
+{com}. eststo Within_M1
+
+. *Between Regression
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP, be
+
+{txt}Between regression (regression on group means)  Number of obs     = {res}       342
+{txt}Group variable: {res}numerical_~y                    {txt}Number of groups  = {res}        18
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.7337                                         {txt}min = {res}        19
+{txt}     Between = {res}0.8799                                         {txt}avg = {res}      19.0
+{txt}     Overall = {res}0.8529                                         {txt}max = {res}        19
+
+                                                {txt}F({res}3{txt},{res}14{txt})           =  {res}    34.19
+{txt}sd(u_i + avg(e_i.)) = {res}.1966886                  {txt}Prob > F          =     {res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .9675764{col 26}{space 2} .1556662{col 37}{space 1}    6.22{col 46}{space 3}0.000{col 54}{space 4} .6337056{col 67}{space 3} 1.301447
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.9635504{col 26}{space 2} .1329214{col 37}{space 1}   -7.25{col 46}{space 3}0.000{col 54}{space 4}-1.248639{col 67}{space 3}-.6784623
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.7952991{col 26}{space 2} .0824742{col 37}{space 1}   -9.64{col 46}{space 3}0.000{col 54}{space 4}-.9721887{col 67}{space 3}-.6184095
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}  2.54163{col 26}{space 2} .5267844{col 37}{space 1}    4.82{col 46}{space 3}0.000{col 54}{space 4}  1.41179{col 67}{space 3}  3.67147
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. eststo Between_M1
+
+. *Random Effect 1: Amemiya (2SGLS) 
+
+. xthtaylor LGASPCAR LINCOMEP LRPMG LCARPCAP numerical_country, endog(LRPMG LCARPCAP) am
+
+{txt}Amemiya–MaCurdy estimation{col 49}Number of obs{col 67}={col 69}{res}       342
+{txt}Group variable: {res}numerical_~y{txt}{col 49}Number of groups{col 67}={col 69}{res}        18
+
+{txt}Time variable: {res}YEAR{txt}{col 49}Obs per group:
+{col 63}min{col 67}={col 69}{res}        19
+{txt}{col 63}avg{col 67}={col 69}{res}        19
+{txt}{col 63}max{col 67}={col 69}{res}        19
+
+{txt}Random effects u_i ~ {res}i.i.d.{txt}{col 49}Wald chi2({res}4{txt}){col 67}={col 69}{res}   1706.00
+{col 49}{txt}Prob > chi2{col 67}={res}{col 73}0.0000
+
+{txt}{hline 13}{c TT}{hline 64}
+    LGASPCAR {c |}{col 16}Coefficient{col 29}Std. err.{col 44}z{col 49}P>|z|{col 59}[95% conf. interval]
+{hline 13}{c +}{hline 64}
+{res}TVexogenous{txt}{col 14}{c |}
+    LINCOMEP {c |}{res}{col 17}  .601659{col 28} .0655808{col 39}   9.17{col 49}0.000{col 58}  .473123{col 70}  .730195
+TVendogenous{txt}{col 14}{c |}
+       LRPMG {c |}{res}{col 17}-.3653802{col 28} .0416331{col 39}  -8.78{col 49}0.000{col 58}-.4469796{col 70}-.2837808
+    {txt}LCARPCAP {c |}{res}{col 17}-.6204085{col 28} .0272462{col 39} -22.77{col 49}0.000{col 58}-.6738101{col 70}-.5670069
+TIexogenous{txt}{col 14}{c |}
+numerical_~y {c |}{res}{col 17} .0098687{col 28} .0152673{col 39}   0.65{col 49}0.518{col 58}-.0200547{col 70}  .039792
+{txt}{col 14}{c |}
+       _cons {c |}{res}{col 17} 2.095586{col 28} .2502824{col 39}   8.37{col 49}0.000{col 58} 1.605042{col 70} 2.586131
+{txt}{hline 13}{c +}{hline 64}
+     sigma_u {c |} {res} .33218938
+{txt}     sigma_e {c |} {res}  .0919019
+{txt}         rho {c |} {res} .92890352{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+Note: {res}TV{txt} refers to time varying; {res}TI{txt} refers to time invariant.
+
+{com}. eststo RE_Amemiya_M1
+
+. *Random Effect 2: Swamy&Arora (2SGLS)
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP, re theta
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       342
+{txt}Group variable: {res}numerical_~y                    {txt}Number of groups  = {res}        18
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.8363                                         {txt}min = {res}        19
+{txt}     Between = {res}0.7099                                         {txt}avg = {res}      19.0
+{txt}     Overall = {res}0.7309                                         {txt}max = {res}        19
+
+                                                {txt}Wald chi2({res}3{txt})      =  {res}  1642.20
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+{txt}theta        = {res}.89230673
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .5549857{col 26}{space 2} .0591282{col 37}{space 1}    9.39{col 46}{space 3}0.000{col 54}{space 4} .4390966{col 67}{space 3} .6708748
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.4203892{col 26}{space 2} .0399781{col 37}{space 1}  -10.52{col 46}{space 3}0.000{col 54}{space 4} -.498745{col 67}{space 3}-.3420335
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.6068401{col 26}{space 2}  .025515{col 37}{space 1}  -23.78{col 46}{space 3}0.000{col 54}{space 4}-.6568487{col 67}{space 3}-.5568316
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 1.996698{col 26}{space 2}  .184326{col 37}{space 1}   10.83{col 46}{space 3}0.000{col 54}{space 4} 1.635426{col 67}{space 3} 2.357971
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res} .19554465
+     {txt}sigma_e {c |} {res} .09233035
+         {txt}rho {c |} {res} .81769849{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. eststo RE_SwamyArora_M1
+
+. *TABLE II
+
+. estout Within_M1 Between_M1 RE_Amemiya_M1 RE_SwamyArora_M1, cells(b(star fmt(%9.4f)) se(par) t(par) p(par))stats(N r2_a r2_b r2_w r2_o, fmt(%9.4f %9.0g)labels (N))
+{res}
+{txt}{hline 76}
+{txt}                Within_M1      Between_M1    RE_Amemiya~1    RE_SwamyAr~1   
+{txt}                 b/se/t/p        b/se/t/p        b/se/t/p        b/se/t/p   
+{txt}{hline 76}
+{txt}LINCOMEP    {res}       0.6622***       0.9676***       0.6017***       0.5550***{txt}
+            {res}     (0.0734)        (0.1557)        (0.0656)        (0.0591)   {txt}
+            {res}     (9.0242)        (6.2157)        (9.1743)        (9.3861)   {txt}
+            {res}     (0.0000)        (0.0000)        (0.0000)        (0.0000)   {txt}
+{txt}LRPMG       {res}      -0.3217***      -0.9636***      -0.3654***      -0.4204***{txt}
+            {res}     (0.0441)        (0.1329)        (0.0416)        (0.0400)   {txt}
+            {res}    (-7.2950)       (-7.2490)       (-8.7762)      (-10.5155)   {txt}
+            {res}     (0.0000)        (0.0000)        (0.0000)        (0.0000)   {txt}
+{txt}LCARPCAP    {res}      -0.6405***      -0.7953***      -0.6204***      -0.6068***{txt}
+            {res}     (0.0297)        (0.0825)        (0.0272)        (0.0255)   {txt}
+            {res}   (-21.5804)       (-9.6430)      (-22.7705)      (-23.7836)   {txt}
+            {res}     (0.0000)        (0.0000)        (0.0000)        (0.0000)   {txt}
+{txt}numerical_~y{res}                                       0.0099                   {txt}
+            {res}                                     (0.0153)                   {txt}
+            {res}                                     (0.6464)                   {txt}
+            {res}                                     (0.5180)                   {txt}
+{txt}_cons       {res}       2.4027***       2.5416***       2.0956***       1.9967***{txt}
+            {res}     (0.2253)        (0.5268)        (0.2503)        (0.1843)   {txt}
+            {res}    (10.6639)        (4.8248)        (8.3729)       (10.8324)   {txt}
+            {res}     (0.0000)        (0.0003)        (0.0000)        (0.0000)   {txt}
+{txt}{hline 76}
+{txt}N           {res}     342.0000        342.0000        342.0000        342.0000   {txt}
+{txt}r2_a        {res}     .8296089        .8541623                                   {txt}
+{txt}r2_b        {res}      .575524        .8798984                        .7099473   {txt}
+{txt}r2_w        {res}     .8396025        .7337217                        .8362628   {txt}
+{txt}r2_o        {res}     .6149832        .8528782                        .7309214   {txt}
+{txt}{hline 76}
+
+{com}. 
+. esttab OLS_M1 Within_M1 Between_M1 RE_Amemiya_M1 RE_SwamyArora_M1 using BASITtabloiki.log, nonumbers mtitles(OLS Within Between Amemiya SwamyArora) cells(b(star fmt(%9.4f)) se(par) t(par) p(par))stats(N r2_a r2_b r2_w r2_o, fmt(%9.4f %9.0g)labels (N)) 
+{res}{txt}(output written to {browse  `"BASITtabloiki.log"'})
+
+{com}. 
+. *-----------------------------------------------------------------------------
+
+. *PART III: Estimation Techniques for MODEL II & TABLE III
+
+. *Estimation Techniques for MODEL II
+
+. *OLS
+
+. reg LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       324
+{txt}{hline 13}{c +}{hline 34}   F(4, 319)       = {res}  6101.33
+{txt}       Model {c |} {res} 93.1822982         4  23.2955746   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 1.21797772       319  .003818112   {txt}R-squared       ={res}    0.9871
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.9869
+{txt}       Total {c |} {res}  94.400276       323  .292260916   {txt}Root MSE        =   {res} .06179
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .0664762{col 26}{space 2}  .017923{col 37}{space 1}    3.71{col 46}{space 3}0.000{col 54}{space 4} .0312139{col 67}{space 3} .1017384
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.0782721{col 26}{space 2} .0168226{col 37}{space 1}   -4.65{col 46}{space 3}0.000{col 54}{space 4}-.1113694{col 67}{space 3}-.0451748
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.0436394{col 26}{space 2} .0137153{col 37}{space 1}   -3.18{col 46}{space 3}0.002{col 54}{space 4}-.0706233{col 67}{space 3}-.0166556
+{txt}{space 12} {c |}
+{space 4}LGASPCAR {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .9287855{col 26}{space 2} .0161576{col 37}{space 1}   57.48{col 46}{space 3}0.000{col 54}{space 4} .8969966{col 67}{space 3} .9605744
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}  .254099{col 26}{space 2} .0515517{col 37}{space 1}    4.93{col 46}{space 3}0.000{col 54}{space 4} .1526746{col 67}{space 3} .3555234
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. eststo OLS_M2
+
+. *Within Regression (Fixed Effect)
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR, fe
+{res}
+{txt}Fixed-effects (within) regression{col 49}Number of obs{col 67}={col 69}{res}       324
+{txt}Group variable: {res}numerical_~y{txt}{col 49}Number of groups{col 67}={col 69}{res}        18
+
+{txt}R-squared:{col 49}Obs per group:
+     Within  = {res}0.9403{col 63}{txt}min{col 67}={col 69}{res}        18
+{txt}     Between = {res}0.9783{col 63}{txt}avg{col 67}={col 69}{res}      18.0
+{txt}     Overall = {res}0.9721{col 63}{txt}max{col 67}={col 69}{res}        18
+
+{txt}{col 49}F({res}4{txt},{res}302{txt}){col 67}={col 70}{res}  1188.23
+{txt}corr(u_i, Xb) = {res}0.3785{txt}{col 49}Prob > F{col 67}={col 73}{res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .1932957{col 26}{space 2} .0484857{col 37}{space 1}    3.99{col 46}{space 3}0.000{col 54}{space 4} .0978831{col 67}{space 3} .2887084
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.1591322{col 26}{space 2} .0268329{col 37}{space 1}   -5.93{col 46}{space 3}0.000{col 54}{space 4}-.2119354{col 67}{space 3}-.1063289
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.1860584{col 26}{space 2} .0267244{col 37}{space 1}   -6.96{col 46}{space 3}0.000{col 54}{space 4}-.2386481{col 67}{space 3}-.1334687
+{txt}{space 12} {c |}
+{space 4}LGASPCAR {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .6920107{col 26}{space 2}  .030197{col 37}{space 1}   22.92{col 46}{space 3}0.000{col 54}{space 4} .6325875{col 67}{space 3}  .751434
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .7263807{col 26}{space 2} .1510072{col 37}{space 1}    4.81{col 46}{space 3}0.000{col 54}{space 4} .4292211{col 67}{space 3}  1.02354
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res}  .0829497
+     {txt}sigma_e {c |} {res} .05228846
+         {txt}rho {c |} {res} .71563621{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+F test that all u_i=0: F({res}17{txt}, {res}302{txt}) = {res}8.44{col 62}{txt}Prob > F = {res}0.0000
+
+{com}. eststo Within_M2
+
+. *Random Effect Model 1: Amemiya (2SGLS) 
+
+. xthtaylor LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR numerical_country, endog(LRPMG LCARPCAP) am
+
+{txt}Amemiya–MaCurdy estimation{col 49}Number of obs{col 67}={col 69}{res}       324
+{txt}Group variable: {res}numerical_~y{txt}{col 49}Number of groups{col 67}={col 69}{res}        18
+
+{txt}Time variable: {res}YEAR{txt}{col 49}Obs per group:
+{col 63}min{col 67}={col 69}{res}        18
+{txt}{col 63}avg{col 67}={col 69}{res}        18
+{txt}{col 63}max{col 67}={col 69}{res}        18
+
+{txt}Random effects u_i ~ {res}i.i.d.{txt}{col 49}Wald chi2({res}5{txt}){col 67}={col 69}{res}   5478.28
+{col 49}{txt}Prob > chi2{col 67}={res}{col 73}0.0000
+
+{txt}{hline 13}{c TT}{hline 64}
+    LGASPCAR {c |}{col 16}Coefficient{col 29}Std. err.{col 44}z{col 49}P>|z|{col 59}[95% conf. interval]
+{hline 13}{c +}{hline 64}
+{res}TVexogenous{txt}{col 14}{c |}
+    LINCOMEP {c |}{res}{col 17} .1633471{col 28} .0326761{col 39}   5.00{col 49}0.000{col 58}  .099303{col 70} .2273911
+    {txt}LGASPCAR {c |}
+         L1. {c |}{res}{col 17} .7334686{col 28} .0271779{col 39}  26.99{col 49}0.000{col 58} .6802009{col 70} .7867362
+TVendogenous{txt}{col 14}{c |}
+       LRPMG {c |}{res}{col 17}-.1707571{col 28} .0238472{col 39}  -7.16{col 49}0.000{col 58}-.2174967{col 70}-.1240175
+    {txt}LCARPCAP {c |}{res}{col 17}-.1594904{col 28} .0210675{col 39}  -7.57{col 49}0.000{col 58}-.2007819{col 70}-.1181989
+TIexogenous{txt}{col 14}{c |}
+numerical_~y {c |}{res}{col 17} .0002465{col 28} .0037185{col 39}   0.07{col 49}0.947{col 58}-.0070415{col 70} .0075346
+{txt}{col 14}{c |}
+       _cons {c |}{res}{col 17} .5948952{col 28} .1048752{col 39}   5.67{col 49}0.000{col 58} .3893437{col 70} .8004468
+{txt}{hline 13}{c +}{hline 64}
+     sigma_u {c |} {res} .07928646
+{txt}     sigma_e {c |} {res} .05194558
+{txt}         rho {c |} {res} .69967306{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+Note: {res}TV{txt} refers to time varying; {res}TI{txt} refers to time invariant.
+
+{com}. eststo RE_Amemiya_M2
+
+. *Random Effect Model 2: Swamy&Arora (2SGLS)
+
+. xtreg LGASPCAR LINCOMEP LRPMG LCARPCAP L.LGASPCAR, re theta
+{res}
+{txt}Random-effects GLS regression                   Number of obs     = {res}       324
+{txt}Group variable: {res}numerical_~y                    {txt}Number of groups  = {res}        18
+
+{txt}R-squared:                                      Obs per group:
+     Within  = {res}0.9362                                         {txt}min = {res}        18
+{txt}     Between = {res}0.9952                                         {txt}avg = {res}      18.0
+{txt}     Overall = {res}0.9861                                         {txt}max = {res}        18
+
+                                                {txt}Wald chi2({res}4{txt})      =  {res} 10046.95
+{txt}corr(u_i, X) = {res}0{txt} (assumed)                      Prob > chi2       =     {res}0.0000
+{txt}theta        = {res}.51973752
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}    LGASPCAR{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}LINCOMEP {c |}{col 14}{res}{space 2} .1320564{col 26}{space 2} .0234133{col 37}{space 1}    5.64{col 46}{space 3}0.000{col 54}{space 4} .0861672{col 67}{space 3} .1779457
+{txt}{space 7}LRPMG {c |}{col 14}{res}{space 2}-.1443785{col 26}{space 2} .0210942{col 37}{space 1}   -6.84{col 46}{space 3}0.000{col 54}{space 4}-.1857225{col 67}{space 3}-.1030346
+{txt}{space 4}LCARPCAP {c |}{col 14}{res}{space 2}-.1054016{col 26}{space 2} .0174929{col 37}{space 1}   -6.03{col 46}{space 3}0.000{col 54}{space 4}-.1396871{col 67}{space 3}-.0711161
+{txt}{space 12} {c |}
+{space 4}LGASPCAR {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .8416961{col 26}{space 2} .0215088{col 37}{space 1}   39.13{col 46}{space 3}0.000{col 54}{space 4} .7995397{col 67}{space 3} .8838526
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .4399933{col 26}{space 2} .0704234{col 37}{space 1}    6.25{col 46}{space 3}0.000{col 54}{space 4}  .301966{col 67}{space 3} .5780207
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+     sigma_u {c |} {res}  .0225088
+     {txt}sigma_e {c |} {res} .05228846
+         {txt}rho {c |} {res} .15633706{txt}   (fraction of variance due to u_i)
+{hline 13}{c BT}{hline 64}
+
+{com}. eststo RE_SwamyArora_M2
+
+. *TABLE III
+
+. estout OLS_M2 Within_M2 RE_Amemiya_M2 RE_SwamyArora_M2, cells(b(star fmt(%9.4f)) se(par) t(par) p(par))stats(N r2_a r2_b r2_w r2_o, fmt(%9.4f %9.0g)labels (N))
+{res}
+{txt}{hline 76}
+{txt}                   OLS_M2       Within_M2    RE_Amemiya~2    RE_SwamyAr~2   
+{txt}                 b/se/t/p        b/se/t/p        b/se/t/p        b/se/t/p   
+{txt}{hline 76}
+{txt}LINCOMEP    {res}       0.0665***       0.1933***       0.1633***       0.1321***{txt}
+            {res}     (0.0179)        (0.0485)        (0.0327)        (0.0234)   {txt}
+            {res}     (3.7090)        (3.9867)        (4.9990)        (5.6402)   {txt}
+            {res}     (0.0002)        (0.0001)        (0.0000)        (0.0000)   {txt}
+{txt}LRPMG       {res}      -0.0783***      -0.1591***      -0.1708***      -0.1444***{txt}
+            {res}     (0.0168)        (0.0268)        (0.0238)        (0.0211)   {txt}
+            {res}    (-4.6528)       (-5.9305)       (-7.1605)       (-6.8445)   {txt}
+            {res}     (0.0000)        (0.0000)        (0.0000)        (0.0000)   {txt}
+{txt}LCARPCAP    {res}      -0.0436**       -0.1861***      -0.1595***      -0.1054***{txt}
+            {res}     (0.0137)        (0.0267)        (0.0211)        (0.0175)   {txt}
+            {res}    (-3.1818)       (-6.9621)       (-7.5705)       (-6.0254)   {txt}
+            {res}     (0.0016)        (0.0000)        (0.0000)        (0.0000)   {txt}
+{txt}L.LGASPCAR  {res}       0.9288***       0.6920***       0.7335***       0.8417***{txt}
+            {res}     (0.0162)        (0.0302)        (0.0272)        (0.0215)   {txt}
+            {res}    (57.4829)       (22.9165)       (26.9877)       (39.1327)   {txt}
+            {res}     (0.0000)        (0.0000)        (0.0000)        (0.0000)   {txt}
+{txt}numerical_~y{res}                                       0.0002                   {txt}
+            {res}                                     (0.0037)                   {txt}
+            {res}                                     (0.0663)                   {txt}
+            {res}                                     (0.9471)                   {txt}
+{txt}_cons       {res}       0.2541***       0.7264***       0.5949***       0.4400***{txt}
+            {res}     (0.0516)        (0.1510)        (0.1049)        (0.0704)   {txt}
+            {res}     (4.9290)        (4.8102)        (5.6724)        (6.2478)   {txt}
+            {res}     (0.0000)        (0.0000)        (0.0000)        (0.0000)   {txt}
+{txt}{hline 76}
+{txt}N           {res}     324.0000        324.0000        324.0000        324.0000   {txt}
+{txt}r2_a        {res}     .9869359        .9361017                                   {txt}
+{txt}r2_b        {res}                     .9783244                        .9951873   {txt}
+{txt}r2_w        {res}                      .940256                        .9361937   {txt}
+{txt}r2_o        {res}                     .9721453                        .9861343   {txt}
+{txt}{hline 76}
+
+{com}. 
+. esttab OLS_M2 Within_M2 RE_Amemiya_M2 RE_SwamyArora_M2 using BASITtabloüç.log, nonumbers mtitles(OLS Within Amemiya SwamyArora) cells(b(star fmt(%9.4f)) se(par) t(par) p(par))stats(N r2_a r2_b r2_w r2_o, fmt(%9.4f %9.0g)labels (N))
+{res}{txt}(output written to {browse  `"BASITtabloüç.log"'})
+
+{com}. 
+. 
